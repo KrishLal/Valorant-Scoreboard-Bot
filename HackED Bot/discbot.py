@@ -16,11 +16,11 @@ import os
 #Custom Imports:
 import img2txt
 
-# token = (open("token.txt")).readline() #Add your own token
-# if(token == ""):
-#     print("No token found! Be sure to add your discord bot token on the first line of the token.txt file")
-#     input("Waiting for input to exit program...")
-#     quit()
+token = (open("token.txt")).readline() #Add your own token
+if(token == ""):
+    print("No token found! Be sure to add your discord bot token on the first line of the token.txt file")
+    input("Waiting for input to exit program...")
+    quit()
 
 client = commands.Bot(command_prefix=".",intents=intents)
 
@@ -71,11 +71,14 @@ async def save(ctx):
         if usernames[userid][0] in temp:
             kd = temp[usernames[userid][0]]
             usernames[userid][1].append(kd)
+            print("Usernames: ", usernames)
         else:
             await ctx.send("Your username is not in this screenshot!")
-    #await saveusername(ctx, name)
 
-    
+    with open("usernames.pickle", "wb") as f:
+        pickle.dump(usernames, f)
+    #return usernames
+    #await saveusername(ctx, name)
     #print("Name of player is" , name)
     #print("Kills:" , kd[0], "\nDeaths:", kd[1])
 
@@ -140,9 +143,9 @@ async def showleaderboard(ctx, query=""):
                 kills = 0
                 deaths = 0
                 for i in range(len(usernames[user][1])): #iterate through history
-                    kills+= (usernames[user][1][i][0])
-                    deaths+= (usernames[user][1][i][0])
-                averages[user] = kills/deaths
+                    kills+= int(usernames[user][1][i][0])+int(usernames[user][1][i][2])
+                    deaths+= int(usernames[user][1][i][1])
+                averages[user] = round(kills/deaths,2)
             else:
                 averages[user] = 0
             print("AVERAGES:")
@@ -151,17 +154,17 @@ async def showleaderboard(ctx, query=""):
             leaderboard = sorted(averages.items(), key=lambda x: x[1], reverse=True)
             leaderboard = leaderboard[:10]
             #generate embed
-            embed = discord.Embed(title="Leaderboard", description="Top 10 Players", color=0xeee657)
+            embed = discord.Embed(title="Leaderboard:",description=f"",colour=ctx.author.colour)
+            fullstr = ""
             for i in range(len(leaderboard)):
-                
                 #NEEDS POLISHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                embed.add_field(name="Player - KDA", value=str(str(leaderboard[i][0])+" - "+str(leaderboard[i][1])), inline=True)
+                fullstr = fullstr + str("["+str(i+1)+"] "+usernames[str(leaderboard[i][0])][0]+" - "+str(leaderboard[i][1]) + "\n")
+            embed.add_field(name="KDA",value=fullstr)
 
         print(averages)
 
-        embed = discord.Embed(title="Leaderboard:",description=f"",colour=ctx.author.colour)
+        
         msg = await ctx.send(embed=embed)
         
 
-client.run("MTAzODg2MjE5OTgwMTc5NDYxMw.G7zvux.INVsrE-8C1BqTe2_m7UWIr5tijeei425ZWuceM")
-
+client.run(token)
