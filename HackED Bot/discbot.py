@@ -16,11 +16,11 @@ import os
 #Custom Imports:
 import img2txt
 
-token = (open("token.txt")).readline() #Add your own token
-if(token == ""):
-    print("No token found! Be sure to add your discord bot token on the first line of the token.txt file")
-    input("Waiting for input to exit program...")
-    quit()
+# token = (open("token.txt")).readline() #Add your own token
+# if(token == ""):
+#     print("No token found! Be sure to add your discord bot token on the first line of the token.txt file")
+#     input("Waiting for input to exit program...")
+#     quit()
 
 client = commands.Bot(command_prefix=".",intents=intents)
 
@@ -163,5 +163,5 @@ async def showleaderboard(ctx, query=""):
         msg = await ctx.send(embed=embed)
         
 
-client.run(token)
+client.run("MTAzODg2MjE5OTgwMTc5NDYxMw.G7zvux.INVsrE-8C1BqTe2_m7UWIr5tijeei425ZWuceM")
 

@@ -4,7 +4,7 @@ import re
 
 #NOTE: May not always work
 pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
-#path_to_image = 'C:/Users/Amogh Panhale/Desktop/picture2.jpg'
+# path_to_image = 'C:/Users/Amogh Panhale/Desktop/picture2.jpg'
 def process(path_to_image):
     img = Image.open(path_to_image).convert('HSV')
     img = img.resize((1920,1080))
@@ -39,13 +39,12 @@ def process(path_to_image):
         left_y += 100
         right_y += 100
 
-
-
     pytesseract.run_tesseract.tesseract_cmd = 'C:/OCR/Tesseract-OCR/tesseract.exe'
     kd_dict = {}
+    custom_config = r'--psm 6  -c tessedit_char_whitelist=0123456789.'
     for i in range(10):
         name = pytesseract.image_to_string(players[i][0])
-        kda = pytesseract.image_to_string(players[i][1])
+        kda = pytesseract.image_to_string(players[i][1], config=custom_config)
         kd = kda.split(" ")
         kd = re.split(r'(\d+)', kda)
         temp = []
@@ -54,9 +53,7 @@ def process(path_to_image):
             if i.isdigit():
                 temp.append(i.strip())
         kd = temp
-
         kd_dict[name] = kd
-
     return(kd_dict)
 
 
