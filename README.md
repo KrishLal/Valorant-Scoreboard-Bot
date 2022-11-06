@@ -21,3 +21,13 @@ For our first hackathon we managed to pull through and complete the main project
 ## What we learned
 
 We learnt loads of new python libraries and the way the entire discord API is setup in the backend.
+
+##How to run
+
+Install dependencies like tesseract, discord.py, pillow, pickle
+Add your own discord token in a file called token.txt (included)
+Bot has 4 commands:
+.save = Saves the provided image, processes it and then reads the stats to store them
+.saveusername = must be done first to give the bot the in-game username for it to find it while image processing
+.updateusername = updates the in-game username
+.showleaderboard = shows the leaderboard of highest KDA within the server with ranking included
