@@ -59,8 +59,11 @@ async def save(ctx):
                 shutil.copyfileobj(req.raw, out_file)
     cwd = os.getcwd()
     #create path with os.path.join(
-    path = os.path.join(cwd, "imageName")
+    path = os.path.join(cwd, imageName)
     temp = img2txt.process(path)
+    print("PROCESSED IMAGE DATA:")
+    print(temp)
+    #NEEDS POLISHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     usernames = load()
     if not userid in usernames:
         await ctx.send("You have not registered your username yet!")
@@ -88,11 +91,11 @@ async def saveusername(ctx, query=""):
         #open python pickle file within the same directory, if it doesnt exist, ensure it exists
         usernames = load()
         #check if discord userid exists in dictionary, if not, add key
-        if str(ctx.author.id) not in usernames:
+        if userid not in usernames:
             usernames[userid] = [query,[]]  #FORMAT: DiscordID: [Game Username, KDA History]
             #kda history = [[kills,deaths], [kills,deaths], [kills,deaths]]
             await ctx.send("Username saved!")
-            print(usernames[ctx.author.id])
+            print(usernames[userid])
        
         #save the dictionary with pickle
         with open("usernames.pickle", "wb") as f:
@@ -119,11 +122,13 @@ async def updateusername(ctx, query=""):
         #save the dictionary with pickle
         with open("usernames.pickle", "wb") as f:
             pickle.dump(usernames, f)
-
+@client.command()
 async def showleaderboard(ctx, query=""): 
     #new function that calculates the score and spits it out as a leaderboard in an embed using the image parser amogh and andrew made
     userid = str(ctx.author.id)
     usernames = load()
+    print("USERNAMES:")
+    print(usernames)
     if not userid in usernames:
         await ctx.send("You have not registered your username yet!")
     else:
@@ -139,14 +144,18 @@ async def showleaderboard(ctx, query=""):
                     deaths+= (usernames[user][1][i][0])
                 averages[user] = kills/deaths
             else:
-                averages[user] = usernames[user][1][0][0]/usernames[user][1][0][1]
+                averages[user] = 0
+            print("AVERAGES:")
+            print(averages)
             #generate top 10 leaderboard from greatest values in averages
             leaderboard = sorted(averages.items(), key=lambda x: x[1], reverse=True)
             leaderboard = leaderboard[:10]
             #generate embed
             embed = discord.Embed(title="Leaderboard", description="Top 10 Players", color=0xeee657)
             for i in range(len(leaderboard)):
-                embed.add_field(name="Player - KDA", value=str(leaderboard[i][0]+" - "+leaderboard[i][1]), inline=True)
+                
+                #NEEDS POLISHING!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                embed.add_field(name="Player - KDA", value=str(str(leaderboard[i][0])+" - "+str(leaderboard[i][1])), inline=True)
 
         print(averages)
 
