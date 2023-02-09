@@ -22,7 +22,7 @@ For our first hackathon we managed to pull through and complete the main project
 
 We learnt loads of new python libraries and the way the entire discord API is setup in the backend.
 
-#How to run
+##How to run
 
 Install dependencies like tesseract, discord.py, pillow, pickle
 Add your own discord token in a file called token.txt (included)
